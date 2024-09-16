@@ -79,6 +79,8 @@ const adminRoutes = require('./routes/admin');
 const authRoutes = require('./routes/auth');
 const blogRoutes = require('./routes/blog');
 const contactRoutes = require('./routes/contact');
+const aboutRoutes = require('./routes/about');
+
 
 
 app.use('/admin', adminRoutes);
@@ -86,6 +88,8 @@ app.use(authRoutes);
 app.use(shopRoutes);
 app.use('/blog', blogRoutes);
 app.use('/contact', contactRoutes);
+app.use('/about', aboutRoutes);
+
 
 // Error Handling Middleware (for CSRF token errors)
 app.use((err, req, res, next) => {
