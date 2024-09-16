@@ -1,0 +1,81 @@
+<!-- views/shop/cart.ejs -->
+<%- include('../partials/header') %>
+
+<h1 class="text-3xl font-bold mb-6">Your Cart</h1>
+
+<% if (cartItems.length > 0) { %>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white rounded-lg shadow-md">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="py-4 px-6 text-left text-sm font-medium text-gray-700">Product</th>
+          <th class="py-4 px-6 text-left text-sm font-medium text-gray-700">Price</th>
+          <th class="py-4 px-6 text-left text-sm font-medium text-gray-700">Quantity</th>
+          <th class="py-4 px-6 text-left text-sm font-medium text-gray-700">Total</th>
+          <th class="py-4 px-6 text-left text-sm font-medium text-gray-700">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% cartItems.forEach(function (item) { %>
+          <tr class="border-b">
+            <td class="py-4 px-6 flex items-center">
+              <img src="/images/<%= item.image %>" alt="<%= item.name %>" class="h-16 w-16 object-cover mr-4 rounded-md">
+              <%= item.name %>
+            </td>
+            <td class="py-4 px-6 text-gray-700">$<%= item.price %></td>
+            <td class="py-4 px-6 items-center space-x-2">
+              <button class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded focus:outline-none" onclick="updateQuantity('<%= item.productId %>', -1)">-</button>
+              <span class="text-center w-10"><%= item.quantity %></span>
+              <button class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-1 rounded focus:outline-none" onclick="updateQuantity('<%= item.productId %>', 1)">+</button>
+            </td>
+            <td class="py-4 px-6 text-gray-700">$<%= (item.price * item.quantity).toFixed(2) %></td>
+            <td class="py-4 px-6">
+              <form action="/cart/remove" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="productId" value="<%= item.productId %>">
+                <button type="submit" class="text-red-600 hover:text-red-800 focus:outline-none">Remove</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+      <tfoot>
+        <tr class="bg-gray-200">
+          <td colspan="3" class="text-right font-bold py-4 px-6">Total:</td>
+          <td class="py-4 px-6 font-bold text-gray-700">$<%= cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2) %></td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="mt-6 text-right">
+    <a href="/checkout" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg focus:outline-none">Proceed to Checkout</a>
+  </div>
+
+<% } else { %>
+  <p class="text-gray-600">Your cart is empty.</p>
+<% } %>
+
+<%- include('../partials/footer') %>
+
+<!-- Include the following script to handle quantity updates -->
+<script>
+  function updateQuantity(productId, change) {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/cart/update', true);
+    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    xhr.setRequestHeader('X-CSRF-TOKEN', '<%= csrfToken %>');
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        location.reload(); // Reload the page to update the cart UI
+      } else {
+        alert('Error updating cart');
+      }
+    };
+    xhr.send(JSON.stringify({
+      productId: productId,
+      change: change
+    }));
+  }
+</script>

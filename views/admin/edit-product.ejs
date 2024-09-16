@@ -1,0 +1,58 @@
+<!-- views/admin/edit-product.ejs -->
+<%- include('../partials/header') %>
+
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-4xl font-bold mb-6">Edit Product</h1>
+
+  <!-- Display errors, if any -->
+  <% if (errors && errors.length > 0) { %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+      <ul class="list-disc pl-5">
+        <% errors.forEach(function (error) { %>
+          <li><%= error.msg %></li>
+        <% }); %>
+      </ul>
+    </div>
+  <% } %>
+
+  <!-- Edit Product Form -->
+  <form action="/admin/products/edit/<%= product._id %>" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow-md">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+    <!-- Product Name -->
+    <div class="mb-6">
+      <label for="name" class="block text-gray-700 font-semibold mb-2">Product Name:</label>
+      <input type="text" name="name" id="name" value="<%= product.name %>" required class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500">
+    </div>
+
+    <!-- Product Price -->
+    <div class="mb-6">
+      <label for="price" class="block text-gray-700 font-semibold mb-2">Price:</label>
+      <input type="number" name="price" id="price" value="<%= product.price %>" required step="0.01" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500">
+    </div>
+
+    <!-- Product Description -->
+    <div class="mb-6">
+      <label for="description" class="block text-gray-700 font-semibold mb-2">Description:</label>
+      <textarea name="description" id="description" rows="4" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500"><%= product.description %></textarea>
+    </div>
+
+    <!-- Product Image -->
+    <div class="mb-6">
+      <label for="image" class="block text-gray-700 font-semibold mb-2">Product Image:</label>
+      <!-- Display current image -->
+      <img src="/images/<%= product.image %>" alt="<%= product.name %>" class="mb-4 w-32 h-32 object-cover rounded">
+      <input type="file" name="newImage" id="newImage" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500">
+      <p class="text-sm text-gray-600 mt-2">Leave this field empty if you don't want to change the image.</p>
+    </div>
+
+    <!-- Update Button -->
+    <div class="text-right">
+      <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded-md shadow-md focus:outline-none transition duration-200">
+        Update Product
+      </button>
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

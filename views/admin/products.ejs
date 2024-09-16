@@ -1,0 +1,48 @@
+<!-- views/admin/products.ejs -->
+<%- include('../partials/header') %>
+
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-4xl font-bold mb-6">Manage Products</h1>
+
+  <!-- Add New Product Button -->
+  <div class="mb-6">
+    <a href="/admin/products/add" class="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-md shadow-md inline-block transition duration-200">
+      Add New Product
+    </a>
+  </div>
+
+  <!-- Products Table -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white rounded-lg shadow-md">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="py-3 px-6 text-left font-medium text-gray-700">Name</th>
+          <th class="py-3 px-6 text-left font-medium text-gray-700">Price</th>
+          <th class="py-3 px-6 text-left font-medium text-gray-700">Quantity</th>
+          <th class="py-3 px-6 text-left font-medium text-gray-700">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% products.forEach(function(product) { %>
+          <tr class="hover:bg-gray-100 transition">
+            <td class="py-3 px-6 border-b text-gray-800"><%= product.name %></td>
+            <td class="py-3 px-6 border-b text-gray-800">$<%= product.price.toFixed(2) %></td>
+            <td class="py-3 px-6 border-b text-gray-800"><%= product.quantity %></td>
+            <td class="py-3 px-6 border-b flex items-center space-x-4">
+              <!-- Edit Button -->
+              <a href="/admin/products/edit/<%= product._id %>" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-200">Edit</a>
+              
+              <!-- Delete Button (with CSRF protection) -->
+              <form action="/admin/products/delete/<%= product._id %>" method="POST" style="display:inline;">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition duration-200">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

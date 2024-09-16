@@ -1,0 +1,73 @@
+<!-- views/admin/dashboard.ejs -->
+<%- include('../partials/header') %>
+
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-4xl font-bold mb-6">Admin Dashboard</h1>
+
+  <!-- Flash Messages -->
+<% if (successMsg) { %>
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+      <%= successMsg %>
+    </div>
+  <% } %>
+  <% if (errorMsg) { %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+      <%= errorMsg %>
+    </div>
+  <% } %>
+
+  <!-- Statistics Section -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <!-- Orders Statistic -->
+    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+      <h2 class="text-xl font-semibold mb-2">Total Orders</h2>
+      <p class="text-5xl font-bold text-indigo-600"><%= orderCount %></p>
+    </div>
+    <!-- Products Statistic -->
+    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+      <h2 class="text-xl font-semibold mb-2">Total Products</h2>
+      <p class="text-5xl font-bold text-green-600"><%= productCount %></p>
+      <!-- View All Products Link -->
+      <a href="/admin/products" class="text-indigo-600 hover:text-indigo-800 mt-4 inline-block">View All Products</a>
+    </div>
+    <!-- Add more statistics as needed, like Revenue, Customers, etc. -->
+  </div>
+
+  <!-- Latest Orders Section -->
+  <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+    <h2 class="text-3xl font-bold mb-4">Latest Orders</h2>
+
+    <table class="min-w-full bg-white table-auto">
+      <thead>
+        <tr class="bg-gray-200">
+          <th class="py-3 px-6 text-left font-medium text-gray-700">Order ID</th>
+          <th class="py-3 px-6 text-left font-medium text-gray-700">Customer</th>
+          <th class="py-3 px-6 text-left font-medium text-gray-700">Total Price</th>
+          <th class="py-3 px-6 text-left font-medium text-gray-700">Date</th>
+          <th class="py-3 px-6 text-left font-medium text-gray-700">Status</th>
+          <th class="py-3 px-6 text-left font-medium text-gray-700">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% orders.forEach(function(order) { %>
+          <tr class="hover:bg-gray-100">
+            <td class="py-3 px-6 border-b"><%= order._id %></td>
+            <td class="py-3 px-6 border-b"><%= order.customerName %></td>
+            <td class="py-3 px-6 border-b">$<%= order.totalPrice.toFixed(2) %></td>
+            <td class="py-3 px-6 border-b"><%= order.date.toLocaleDateString() %></td>
+            <td class="py-3 px-6 border-b">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <%= order.orderStatus === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' %>">
+                <%= order.orderStatus %>
+              </span>
+            </td>
+            <td class="py-3 px-6 border-b">
+              <a href="/admin/orders/<%= order._id %>" class="text-indigo-500 hover:text-indigo-700">View</a>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

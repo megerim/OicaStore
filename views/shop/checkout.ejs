@@ -1,0 +1,32 @@
+<!-- views/shop/checkout.ejs -->
+<%- include('../partials/header') %>
+
+<h1 class="text-3xl font-bold mb-6">Checkout</h1>
+
+<form action="/checkout" method="POST">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  <h2 class="text-2xl font-semibold mb-4">Billing Details</h2>
+  <div class="mb-4">
+    <label for="name" class="block text-gray-700">Your Name:</label>
+    <input type="text" name="name" required class="w-full border rounded px-2 py-1">
+  </div>
+  <div class="mb-4">
+    <label for="email" class="block text-gray-700">Your Email:</label>
+    <input type="email" name="email" required class="w-full border rounded px-2 py-1">
+  </div>
+  <div class="mb-4">
+    <label for="address" class="block text-gray-700">Your Address:</label>
+    <textarea name="address" required class="w-full border rounded px-2 py-1"></textarea>
+  </div>
+
+  <h2 class="text-2xl font-semibold mb-4">Order Summary</h2>
+  <!-- Display cart items similar to the cart page -->
+  <table class="min-w-full bg-white mb-6">
+    <!-- Table headers and rows as in the cart page -->
+    <!-- ... -->
+  </table>
+
+  <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Place Order</button>
+</form>
+
+<%- include('../partials/footer') %>

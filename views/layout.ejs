@@ -1,0 +1,40 @@
+<!-- views/layout.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= title %></title>
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="/css/tailwind.css" />
+  <!-- Additional custom CSS -->
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="bg-gray-100">
+  <!-- Navbar -->
+  <nav class="bg-white shadow">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="/" class="text-xl font-bold text-gray-800">Olive Oil Shop</a>
+      <div>
+        <% if (user && user.isAdmin) { %>
+          <a href="/admin/orders" class="text-gray-800 px-3">Admin Dashboard</a>
+          <a href="/admin/logout" class="text-gray-800 px-3">Logout</a>
+        <% } else { %>
+          <a href="/" class="text-gray-800 px-3">Home</a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-4 py-8">
+    <%- body %>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-white shadow mt-8">
+    <div class="container mx-auto px-4 py-4 text-center text-gray-600">
+      &copy; <%= new Date().getFullYear() %> Olive Oil Shop. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>
