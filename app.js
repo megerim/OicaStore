@@ -77,10 +77,15 @@ app.use((req, res, next) => {
 const shopRoutes = require('./routes/shop');
 const adminRoutes = require('./routes/admin');
 const authRoutes = require('./routes/auth');
+const blogRoutes = require('./routes/blog');
+const contactRoutes = require('./routes/contact');
+
 
 app.use('/admin', adminRoutes);
 app.use(authRoutes);
 app.use(shopRoutes);
+app.use('/blog', blogRoutes);
+app.use('/contact', contactRoutes);
 
 // Error Handling Middleware (for CSRF token errors)
 app.use((err, req, res, next) => {
@@ -93,7 +98,7 @@ app.use((err, req, res, next) => {
   }
 });
 
-// Start the Server
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
